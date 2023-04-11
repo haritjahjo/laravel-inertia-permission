@@ -6,6 +6,15 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+import VueMultiselect from 'vue-multiselect';
+
+import Table from "@/Components/Table.vue";
+import TableRow from '@/Components/TableRow.vue';
+import TableHeaderCell from '@/Components/TableHeaderCell.vue';
+import TableDataCell from '@/Components/TableDataCell.vue';
+
+import { onMounted, watch } from "vue";
+
 const props = defineProps({
     user: {
         type: Object,

@@ -8,6 +8,13 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import VueMultiselect from 'vue-multiselect';
 
+import Table from "@/Components/Table.vue";
+import TableRow from '@/Components/TableRow.vue';
+import TableHeaderCell from '@/Components/TableHeaderCell.vue';
+import TableDataCell from '@/Components/TableDataCell.vue';
+
+import { onMounted, watch } from "vue";
+
 const props = defineProps({
     role: {
         type: Object,
@@ -19,6 +26,10 @@ const form = useForm({
     name: props.role.name,
     permissions: [],
 });
+
+onMounted(() => {
+    form.permissions = props.role?.permissions;
+})
 
 </script>
 
@@ -34,8 +45,8 @@ const form = useForm({
                 Back
                 </Link>
             </div>
-            <div class="mt-6 max-w-md mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
-                <h1 class="text-2xl p-4">Update role</h1>
+            <div class="mt-6 max-w-6xl mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
+                <h1 class="text-2xl font-semibold text-indigo-700">Update role</h1>
                 <form @submit.prevent="form.put(route('roles.update', role.id))">
                     <div class="mt-4">
                         <InputLabel for="name" value="name" />
@@ -47,14 +58,8 @@ const form = useForm({
                     </div>
                     <div class="mt-4">
                         <InputLabel for="permissions" value="permissions" />
-                        <VueMultiselect 
-                            v-model="form.permissions" 
-                            :options="permissions" 
-                            :multiple="true" 
-                            :close-on-select="true"
-                            placeholder="Choose Permissions" 
-                            label="name" 
-                            track-by="id" />
+                        <VueMultiselect v-model="form.permissions" :options="permissions" :multiple="true"
+                            :close-on-select="true" placeholder="Choose Permissions" label="name" track-by="id" />
                     </div>
 
                     <div class="flex items-center justify-start mt-4">
@@ -63,6 +68,31 @@ const form = useForm({
                         </PrimaryButton>
                     </div>
                 </form>
+            </div>
+            <div class="mt-6 max-w-6xl mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
+                <h1 class="text-2xl font-semibold text-indigo-700">Permissions</h1>
+                <div class="bg-white">
+                    <Table>
+                    <template #header>
+                        <TableRow>
+                            <TableHeaderCell>ID</TableHeaderCell>
+                            <TableHeaderCell>Name</TableHeaderCell>
+                            <TableHeaderCell>Action</TableHeaderCell>
+                        </TableRow>
+                    </template>
+                    <template #default>
+                        <TableRow v-for="rolePermission in role.permissions" :key="rolePermission.id" class="border-b">
+                            <TableDataCell>{{ rolePermission.id }}</TableDataCell>
+                            <TableDataCell>{{ rolePermission.name }}</TableDataCell>
+                            <TableDataCell class="space-x-4">
+                                <Link :href="route('permissions.destroy', rolePermission.id)" method="DELETE" as="button"
+                                    class="text-red-400 hover:text-red-600">Revoke</Link>
+                            </TableDataCell>
+                        </TableRow>
+                    </template>
+                </Table>
+                </div>
+                
             </div>
         </div>
     </AdminLayout>
