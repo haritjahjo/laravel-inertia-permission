@@ -30,8 +30,8 @@ const form = useForm({
                 Back
                 </Link>
             </div>
-            <div class="mt-6 max-w-md mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
-                <h1 class="text-2xl p-4">Create a new role</h1>
+            <div class="mt-6 max-w-6xl mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
+                <h1 class="text-2xl font-semibold text-indigo-700">Create a new role</h1>
                 <form @submit.prevent="form.post(route('roles.store'))" >
                     <div>
                         <InputLabel for="name" value="name" />
