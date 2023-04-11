@@ -2,13 +2,21 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+import VueMultiselect from 'vue-multiselect';
+
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
+defineProps({
+
+    permissions: Array,
+});
+
 const form = useForm({
     name: '',
+    permissions: [],
 });
 
 // const submit = () => {
@@ -33,7 +41,7 @@ const form = useForm({
             <div class="mt-6 max-w-6xl mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
                 <h1 class="text-2xl font-semibold text-indigo-700">Create a new role</h1>
                 <form @submit.prevent="form.post(route('roles.store'))" >
-                    <div>
+                    <div class="mt-4">
                         <InputLabel for="name" value="name" />
 
                         <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autofocus
@@ -41,7 +49,11 @@ const form = useForm({
 
                         <InputError class="mt-2" :message="form.errors.name" />
                     </div>
-
+                    <div class="mt-4">
+                        <InputLabel for="permissions" value="permissions" />
+                        <VueMultiselect v-model="form.permissions" :options="permissions" :multiple="true"
+                            :close-on-select="true" placeholder="Choose Permissions" label="name" track-by="id" />
+                    </div>
                     <div class="flex items-center justify-start mt-4">
                         <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                             Create
@@ -52,3 +64,4 @@ const form = useForm({
         </div>
     </AdminLayout>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -19,7 +19,7 @@ class RoleController extends Controller
     public function index(): Response
     {
         return Inertia::render('Admin/Roles/RoleIndex', [
-            'roles' => RoleResource::collection(Role::all()),
+            'roles' => RoleResource::collection(Role::all()),            
         ]);
     }
 
@@ -28,7 +28,9 @@ class RoleController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Admin/Roles/Create');
+        return Inertia::render('Admin/Roles/Create', [
+            'permissions' => PermissionResource::collection(Permission::all()),
+        ]);
     }
 
     /**
@@ -36,7 +38,11 @@ class RoleController extends Controller
      */
     public function store(CreateRoleRequest $request)
     {
-        Role::create($request->validated());
+        //Role::create($request->validated());
+        $role = Role::create(['name' => $request->name]);
+        if($request->has('permissions')){
+            $role->syncPermissions($request->input('permissions.*.name'));
+        }
         return to_route('roles.index');
     }
 

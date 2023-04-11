@@ -21,7 +21,8 @@ const props = defineProps({
         required: true,
     },
     permissions: Array,
-})
+});
+
 const form = useForm({
     name: props.role.name,
     permissions: [],
@@ -29,7 +30,14 @@ const form = useForm({
 
 onMounted(() => {
     form.permissions = props.role?.permissions;
-})
+});
+
+watch(
+    
+    () => props.role,
+    () => (form.permissions = props.role?.permissions)
+
+);
 
 </script>
 
@@ -85,7 +93,7 @@ onMounted(() => {
                             <TableDataCell>{{ rolePermission.id }}</TableDataCell>
                             <TableDataCell>{{ rolePermission.name }}</TableDataCell>
                             <TableDataCell class="space-x-4">
-                                <Link :href="route('permissions.destroy', rolePermission.id)" method="DELETE" as="button"
+                                <Link :href="route('roles.permissions.destroy', [role.id, rolePermission.id])" method="DELETE" as="button"
                                     class="text-red-400 hover:text-red-600">Revoke</Link>
                             </TableDataCell>
                         </TableRow>
