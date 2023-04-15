@@ -22,7 +22,8 @@ const props = defineProps({
     },
     roles: Array,
     permissions: Array,
-})
+});
+
 const form = useForm({
     name: props.user?.name,
     email: props.user?.email,
@@ -37,15 +38,15 @@ const submit = () => {
 
 onMounted(() => {
     form.permissions = props.user?.permissions;
-    form.roles= props.user?.roles;
+    form.roles = props.user?.roles;
 });
 
 watch(
-    
-    () => props.role,
-    () => {        
+
+    () => props.user,
+    () => {
         form.permissions = props.user?.permissions;
-        form.roles = props.user?.roles;    
+        form.roles = props.user?.roles;
     }
 
 );
@@ -103,7 +104,7 @@ watch(
                     </div>
                 </form>
             </div>
-            <div class="mt-6 max-w-6xl mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
+            <div class="mt-4 shadow-lg p-6 rounded-lg">
                 <h1 class="text-2xl font-semibold text-indigo-700">Roles</h1>
                 <div class="bg-white">
                     <Table>
@@ -119,8 +120,14 @@ watch(
                                 <TableDataCell>{{ userRole.id }}</TableDataCell>
                                 <TableDataCell>{{ userRole.name }}</TableDataCell>
                                 <TableDataCell class="space-x-4">
-                                    <Link href=""
-                                        method="DELETE" as="button" class="text-red-400 hover:text-red-600">Revoke</Link>
+                                    <Link 
+                                        :href="route('users.roles.destroy', [user.id, userRole.id])" 
+                                        method="DELETE" 
+                                        as="button"                                         
+                                        class="text-red-400 hover:text-red-600"
+                                        preserve-scroll
+                                        >Revoke
+                                    </Link>
                                 </TableDataCell>
                             </TableRow>
                         </template>
@@ -128,7 +135,7 @@ watch(
                 </div>
 
             </div>
-                        <div class="mt-6 max-w-6xl mx-auto bg-slate-100 rounded-lg shadow-lg p-6">
+            <div class="mt-4 shadow-lg p-6 rounded-lg">
                 <h1 class="text-2xl font-semibold text-indigo-700">Permissions</h1>
                 <div class="bg-white">
                     <Table>
@@ -144,8 +151,12 @@ watch(
                                 <TableDataCell>{{ userPermission.id }}</TableDataCell>
                                 <TableDataCell>{{ userPermission.name }}</TableDataCell>
                                 <TableDataCell class="space-x-4">
-                                    <Link :href="route('roles.permissions.destroy', [user.id, userPermission.id])"
-                                        method="DELETE" as="button" class="text-red-400 hover:text-red-600">Revoke</Link>
+                                    <Link 
+                                        :href="route('users.permissions.destroy', [user.id, userPermission.id])"
+                                        method="DELETE" as="button" 
+                                        class="text-red-400 hover:text-red-600"
+                                        preserve-scroll
+                                        >Revoke</Link>
                                 </TableDataCell>
                             </TableRow>
                         </template>

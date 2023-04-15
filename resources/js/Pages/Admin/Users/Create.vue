@@ -5,13 +5,23 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import VueMultiselect from 'vue-multiselect';
+
+import { onMounted, watch } from "vue";
+
+defineProps({    
+    roles: Array,
+    permissions: Array,
+});
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-    terms: false,
+//    terms: false,
+    roles: [],
+    permissions: [],
 });
 
 // const submit = () => {
@@ -19,6 +29,8 @@ const form = useForm({
 //         onFinish: () => form.reset('password', 'password_confirmation'),
 //     });
 // };
+
+
 </script>
 
 <template>
@@ -33,12 +45,9 @@ const form = useForm({
                 </Link>
             </div>
         </div>
-        <div class="max-w-md mx-auto mt-6 p-6 bg-slate-100">
-
-
-
+        <div class="max-w-md mx-auto mt-6 p-6 bg-slate-100 shadow-lg">
             <form @submit.prevent="form.post(route('users.store'))">
-                <div>
+                <div class="mt-4">
                     <InputLabel for="name" value="Name" />
 
                     <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus
@@ -73,6 +82,17 @@ const form = useForm({
 
                     <InputError class="mt-2" :message="form.errors.password_confirmation" />
                 </div>
+                <div class="mt-4">
+                    <InputLabel for="roles" value="roles" />
+                    <VueMultiselect v-model="form.roles" :options="roles" :multiple="true" :close-on-select="true"
+                        placeholder="Choose Roles" label="name" track-by="id" />
+                </div>
+                <div class="mt-4">
+                    <InputLabel for="permissions" value="permissions" />
+                    <VueMultiselect v-model="form.permissions" :options="permissions" :multiple="true"
+                        :close-on-select="true" placeholder="Choose Permissions" label="name" track-by="id" />
+                </div>
+
 
                 <div class="flex items-center justify-end mt-4">
 
@@ -85,3 +105,4 @@ const form = useForm({
 
     </AdminLayout>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
