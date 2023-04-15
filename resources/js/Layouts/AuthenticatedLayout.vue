@@ -39,6 +39,11 @@ const { hasRole } = usePermission();
                                     :href="route('users.index')" :active="route().current('users.index')">
                                     Admin
                                 </NavLink>
+                                <NavLink 
+                                    v-if="hasRole('admin')"
+                                    :href="route('posts.index')" :active="route().current('posts.index')">
+                                    Post
+                                </NavLink>
                             </div>
                         </div>
 
@@ -121,6 +126,16 @@ const { hasRole } = usePermission();
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink 
+                            v-if="hasRole('admin')"
+                            :href="route('users.index')" :active="route().current('users.index')">
+                            Admin
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink 
+                            v-if="hasRole('admin')"
+                            :href="route('posts.index')" :active="route().current('posts.index')">
+                            Posts
                         </ResponsiveNavLink>
                     </div>
 
